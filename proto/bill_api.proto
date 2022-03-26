@@ -1,0 +1,24 @@
+syntax = "proto3";
+package bill;
+option go_package = "/billpb";
+
+enum Type {
+    BillTypeInvalid = 0;
+    BillTypeHalf = 1;
+    BillTypeAdvance = 2;
+}
+
+message AddRequest {
+    Type type = 1;
+    repeated string half_for_list = 2;
+    int64 amount = 3;
+}
+
+message AddResponse {
+    int32 status_code = 1;
+    string err_desc = 2;
+}
+
+service Bill {
+    rpc Add(AddRequest) returns (AddResponse) {};
+}
