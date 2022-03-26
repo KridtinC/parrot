@@ -1,0 +1,11 @@
+{
+  "name": "parrot-web",
+  "version": "1.0.0",
+  "description": "an alternative money management like KhunThong for those who want to advance money first, and then check bill to others who has advanced money for at scheduled time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kridtin Chawalratikool",
+  "license": "ISC"
+}
