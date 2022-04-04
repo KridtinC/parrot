@@ -1,2 +1,3 @@
 protogen:
-	protoc ./proto/*.proto --go-grpc_out=./proto --go_out=./proto
+	protoc ./proto/svc/**/*.proto --go-grpc_out=.. --go_out=..
+	protoc ./proto/svc/*.proto --go-grpc_out=.. --go_out=..

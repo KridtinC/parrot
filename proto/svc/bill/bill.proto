@@ -1,0 +1,18 @@
+syntax = "proto3";
+package svc.bill;
+option go_package = "parrot/proto/svc/bill;billpb";
+
+message Bill {
+    string bill_id = 1;
+    string payer_id = 2;
+    string payee_id = 3;
+    float amount = 4;
+    PayType pay_type = 5;
+    
+}
+
+enum PayType {
+    BillTypeInvalid = 0;
+    BillTypeHalved = 1;
+    BillTypeAdvanced = 2;
+}

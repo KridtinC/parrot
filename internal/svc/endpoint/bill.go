@@ -3,25 +3,43 @@ package endpoint
 import (
 	"context"
 	"log"
-	"parrot/proto/billpb"
+	"parrot/proto/svc"
 )
 
 // BillEndpoint endpoint for bills
 type BillEndpoint struct {
-	billpb.UnimplementedBillServer
+	svc.UnimplementedBillServer
+	billUseCase billUseCase
 }
 
 // NewBillEndpoint init bill endpoint
-func NewBillEndpoint() *BillEndpoint {
-	return &BillEndpoint{}
+func NewBillEndpoint(billUseCase billUseCase) *BillEndpoint {
+	return &BillEndpoint{
+		billUseCase: billUseCase,
+	}
 }
 
 // Add add bill
-func (b *BillEndpoint) Add(ctx context.Context, req *billpb.AddRequest) (*billpb.AddResponse, error) {
+func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddRequest) (*svc.AddResponse, error) {
 
-	log.Printf("called add, type %s list %v amount %v\n", req.GetType(), req.GetHalfForList(), req.GetAmount())
+	log.Printf("called add, type %s list %v amount %v\n", req.GetPayType(), req.GetHalfForList(), req.GetAmount())
 
-	return &billpb.AddResponse{
+	return &svc.AddResponse{
 		StatusCode: 200,
+	}, nil
+}
+
+// Get get bill
+func (b *BillEndpoint) Get(ctx context.Context, req *svc.GetRequest) (*svc.GetResponse, error) {
+
+	log.Printf("called get, bill id %s\n", req.GetBillId())
+
+	bill, err := b.billUseCase.Get(ctx, req.GetBillId())
+	if err != nil {
+		return nil, err
+	}
+
+	return &svc.GetResponse{
+		Bill: bill.ToProto(),
 	}, nil
 }

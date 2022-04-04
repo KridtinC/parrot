@@ -5,10 +5,7 @@ import (
 	"log"
 	"net"
 	"parrot/internal/config"
-	"parrot/internal/svc/endpoint"
-	"parrot/proto/billpb"
-
-	"google.golang.org/grpc"
+	"parrot/internal/svc"
 )
 
 var (
@@ -22,10 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	grpcServ := grpc.NewServer()
-
-	billEndpoint := endpoint.NewBillEndpoint()
-	billpb.RegisterBillServer(grpcServ, billEndpoint)
+	grpcServ := svc.NewService()
 
 	log.Printf("listen at %s:%s", basePathURL, appPort)
 	if err := grpcServ.Serve(listener); err != nil {
