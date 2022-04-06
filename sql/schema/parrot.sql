@@ -2,7 +2,7 @@ drop database if exists parrot ;
 create database parrot;
 
 create table parrot.bill (
-	bill_id char(10) primary key not null,
+	bill_id char(23) primary key not null,
     payer_id char(10),
     payee_id char(10),
     amount float,

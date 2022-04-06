@@ -6,8 +6,8 @@ import "proto/svc/bill/bill.proto";
 
 message AddRequest {
     bill.PayType pay_type = 1;
-    repeated string half_for_list = 2;
-    int64 amount = 3;
+    repeated string halved_for_list = 2;
+    float amount = 3;
 }
 
 message AddResponse {

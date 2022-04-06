@@ -28,6 +28,12 @@ var PayTypeToProtoMap = map[PayType]billpb.PayType{
 	PayTypeAdvanced: billpb.PayType_BillTypeAdvanced,
 }
 
+var PayTypeFromProtoMap = map[billpb.PayType]PayType{
+	billpb.PayType_BillTypeInvalid:  "",
+	billpb.PayType_BillTypeHalved:   PayTypeHalved,
+	billpb.PayType_BillTypeAdvanced: PayTypeAdvanced,
+}
+
 // PayType user's pay type
 type PayType string
 
