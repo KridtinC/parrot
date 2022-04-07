@@ -1,0 +1,29 @@
+syntax = "proto3";
+package svc;
+option go_package = "parrot/proto/svc";
+
+import "proto/svc/bill/bill.proto";
+
+message AddRequest {
+    bill.PayType pay_type = 1;
+    repeated string halved_for_list = 2;
+    float amount = 3;
+}
+
+message AddResponse {
+    int32 status_code = 1;
+    string err_desc = 2;
+}
+
+message GetRequest {
+    string bill_id = 1;
+}
+
+message GetResponse {
+    bill.Bill bill = 1;
+}
+
+service Bill {
+    rpc Add(AddRequest) returns (AddResponse) {};
+    rpc Get(GetRequest) returns (GetResponse) {};
+}
