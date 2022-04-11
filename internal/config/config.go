@@ -6,6 +6,8 @@ type Config struct {
 	BasePathURL string
 	AppPort     string
 	DBConfig    *DBConfig
+
+	JWTSecretKey []byte
 }
 
 var conf *Config
@@ -23,6 +25,8 @@ func Get() *Config {
 				Port:     foundation.GetEnvWithDefault("DB_PORT", "3307"),
 				Name:     foundation.GetEnvWithDefault("DB_NAME", "parrot"),
 			},
+
+			JWTSecretKey: []byte(foundation.GetEnvWithDefault("JWT_SECRET_KEY", "")),
 		}
 	}
 	return conf

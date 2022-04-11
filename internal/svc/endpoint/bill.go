@@ -13,15 +13,15 @@ type BillEndpoint struct {
 	billUseCase billUseCase
 }
 
-// NewBillEndpoint init bill endpoint
-func NewBillEndpoint(billUseCase billUseCase) *BillEndpoint {
+// NewBill init bill endpoint
+func NewBill(billUseCase billUseCase) *BillEndpoint {
 	return &BillEndpoint{
 		billUseCase: billUseCase,
 	}
 }
 
 // Add add bill
-func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddRequest) (*svc.AddResponse, error) {
+func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddBillRequest) (*svc.AddBillResponse, error) {
 
 	log.Printf("called add, type %s list %v amount %v\n", req.GetPayType(), req.GetHalvedForList(), req.GetAmount())
 
@@ -30,13 +30,13 @@ func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddRequest) (*svc.AddRe
 		return nil, err
 	}
 
-	return &svc.AddResponse{
+	return &svc.AddBillResponse{
 		StatusCode: 200,
 	}, nil
 }
 
 // Get get bill
-func (b *BillEndpoint) Get(ctx context.Context, req *svc.GetRequest) (*svc.GetResponse, error) {
+func (b *BillEndpoint) Get(ctx context.Context, req *svc.GetBillRequest) (*svc.GetBillResponse, error) {
 
 	log.Printf("called get, bill id %s\n", req.GetBillId())
 
@@ -45,7 +45,7 @@ func (b *BillEndpoint) Get(ctx context.Context, req *svc.GetRequest) (*svc.GetRe
 		return nil, err
 	}
 
-	return &svc.GetResponse{
+	return &svc.GetBillResponse{
 		Bill: bill.ToProto(),
 	}, nil
 }

@@ -18,8 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BillClient interface {
-	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
-	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Add(ctx context.Context, in *AddBillRequest, opts ...grpc.CallOption) (*AddBillResponse, error)
+	Get(ctx context.Context, in *GetBillRequest, opts ...grpc.CallOption) (*GetBillResponse, error)
 }
 
 type billClient struct {
@@ -30,8 +30,8 @@ func NewBillClient(cc grpc.ClientConnInterface) BillClient {
 	return &billClient{cc}
 }
 
-func (c *billClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error) {
-	out := new(AddResponse)
+func (c *billClient) Add(ctx context.Context, in *AddBillRequest, opts ...grpc.CallOption) (*AddBillResponse, error) {
+	out := new(AddBillResponse)
 	err := c.cc.Invoke(ctx, "/svc.Bill/Add", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -39,8 +39,8 @@ func (c *billClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *billClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
-	out := new(GetResponse)
+func (c *billClient) Get(ctx context.Context, in *GetBillRequest, opts ...grpc.CallOption) (*GetBillResponse, error) {
+	out := new(GetBillResponse)
 	err := c.cc.Invoke(ctx, "/svc.Bill/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -52,8 +52,8 @@ func (c *billClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallO
 // All implementations must embed UnimplementedBillServer
 // for forward compatibility
 type BillServer interface {
-	Add(context.Context, *AddRequest) (*AddResponse, error)
-	Get(context.Context, *GetRequest) (*GetResponse, error)
+	Add(context.Context, *AddBillRequest) (*AddBillResponse, error)
+	Get(context.Context, *GetBillRequest) (*GetBillResponse, error)
 	mustEmbedUnimplementedBillServer()
 }
 
@@ -61,10 +61,10 @@ type BillServer interface {
 type UnimplementedBillServer struct {
 }
 
-func (UnimplementedBillServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
+func (UnimplementedBillServer) Add(context.Context, *AddBillRequest) (*AddBillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
-func (UnimplementedBillServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
+func (UnimplementedBillServer) Get(context.Context, *GetBillRequest) (*GetBillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
 func (UnimplementedBillServer) mustEmbedUnimplementedBillServer() {}
@@ -81,7 +81,7 @@ func RegisterBillServer(s grpc.ServiceRegistrar, srv BillServer) {
 }
 
 func _Bill_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddRequest)
+	in := new(AddBillRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -93,13 +93,13 @@ func _Bill_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		FullMethod: "/svc.Bill/Add",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BillServer).Add(ctx, req.(*AddRequest))
+		return srv.(BillServer).Add(ctx, req.(*AddBillRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Bill_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+	in := new(GetBillRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -111,7 +111,7 @@ func _Bill_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{
 		FullMethod: "/svc.Bill/Get",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BillServer).Get(ctx, req.(*GetRequest))
+		return srv.(BillServer).Get(ctx, req.(*GetBillRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

@@ -3,6 +3,7 @@ package svc
 import (
 	"log"
 	"parrot/internal/config"
+	"parrot/internal/middleware"
 	"parrot/internal/svc/endpoint"
 	"parrot/internal/svc/repository"
 	"parrot/internal/svc/usecase"
@@ -23,7 +24,7 @@ var (
 // NewService new grpc service and register endpoint
 func NewService() *grpc.Server {
 	// init grpc server
-	grpcServ := grpc.NewServer()
+	grpcServ := grpc.NewServer(middleware.AuthorizationInterceptor())
 
 	// init db connection
 	dbconn, err := db.OpenMySQLConnection(dbIP, dbPort, dbUserName, dbPassword, dbName)
@@ -34,8 +35,18 @@ func NewService() *grpc.Server {
 	// init instace for services
 	billRepository := repository.NewBill(dbconn)
 	billUseCase := usecase.NewBill(billRepository)
-	billEndpoint := endpoint.NewBillEndpoint(billUseCase)
+	billEndpoint := endpoint.NewBill(billUseCase)
+
+	userRepository := repository.NewUser(dbconn)
+	userUseCase := usecase.NewUser(userRepository)
+	userEndpoint := endpoint.NewUser(userUseCase)
+
+	authUseCase := usecase.NewAuth(userRepository)
+	authEndpoint := endpoint.NewAuth(authUseCase)
+
 	svc.RegisterBillServer(grpcServ, billEndpoint)
+	svc.RegisterUserServer(grpcServ, userEndpoint)
+	svc.RegisterAuthServer(grpcServ, authEndpoint)
 
 	return grpcServ
 }
