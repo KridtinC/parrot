@@ -2,9 +2,17 @@ package config
 
 import "parrot/pkg/foundation"
 
+type AppEnvironment string
+
+var (
+	EnvDEV AppEnvironment = "dev"
+	EnvPRD AppEnvironment = "prd"
+)
+
 type Config struct {
 	BasePathURL string
 	AppPort     string
+	Environment AppEnvironment
 	DBConfig    *DBConfig
 
 	JWTSecretKey []byte
@@ -18,6 +26,7 @@ func Get() *Config {
 		conf = &Config{
 			BasePathURL: foundation.GetEnvWithDefault("BASE_PATH_URL", "localhost"),
 			AppPort:     foundation.GetEnvWithDefault("APP_PORT", "8080"),
+			Environment: AppEnvironment(foundation.GetEnvWithDefault("APP_ENV", "dev")),
 			DBConfig: &DBConfig{
 				UserName: foundation.GetEnvWithDefault("DB_USERNAME", "parrot"),
 				Password: foundation.GetEnvWithDefault("DB_PASSWORD", "P@ssw0rd"),

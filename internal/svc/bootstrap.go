@@ -1,6 +1,7 @@
 package svc
 
 import (
+	"flag"
 	"log"
 	"parrot/internal/config"
 	"parrot/internal/middleware"
@@ -30,6 +31,23 @@ func NewService() *grpc.Server {
 	dbconn, err := db.OpenMySQLConnection(dbIP, dbPort, dbUserName, dbPassword, dbName)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	var resetDB bool
+	flag.BoolVar(&resetDB, "resetdb", false, "true: reset db")
+	flag.Parse()
+
+	// resetDB use only in dev env
+	if resetDB && config.Get().Environment == config.EnvDEV {
+		err := db.ResetDB(dbconn)
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = db.DumpDB(dbconn)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 	}
 
 	// init instace for services

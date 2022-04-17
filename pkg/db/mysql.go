@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"reflect"
+	"strings"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -14,6 +15,7 @@ type MySQLConnection struct {
 	DBName string
 }
 
+// Scan scan result into struct
 func Scan(result *sql.Row, x interface{}) error {
 
 	val := reflect.ValueOf(x).Elem()
@@ -26,6 +28,24 @@ func Scan(result *sql.Row, x interface{}) error {
 	}
 
 	return result.Scan(v...)
+}
+
+// ExecScripts execute multiple scripts from single string
+// Note: script string should have ; between each script
+func (m *MySQLConnection) ExecScripts(sqlScript string) error {
+	scripts := strings.Split(sqlScript, ";")
+
+	for _, script := range scripts {
+		if len(script) == 0 {
+			continue
+		}
+		_, err := m.Exec(script)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 // OpenMySQLConnection open mysql connection
