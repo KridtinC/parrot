@@ -15,8 +15,13 @@ type MySQLConnection struct {
 	DBName string
 }
 
-// Scan scan result into struct
-func Scan(result *sql.Row, x interface{}) error {
+// Scannable interface for struct can be scanned
+type Scannable interface {
+	Scan(dest ...interface{}) error
+}
+
+// ScanAll scan result into struct with all fields
+func ScanAll(result Scannable, x interface{}) error {
 
 	val := reflect.ValueOf(x).Elem()
 
@@ -51,7 +56,7 @@ func (m *MySQLConnection) ExecScripts(sqlScript string) error {
 // OpenMySQLConnection open mysql connection
 func OpenMySQLConnection(ip, port, username, password, dbName string) (*MySQLConnection, error) {
 
-	var connstr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, ip, port, dbName)
+	var connstr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, ip, port, dbName)
 
 	db, err := sql.Open("mysql", connstr)
 	if err != nil {

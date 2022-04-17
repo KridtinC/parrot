@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"parrot/internal/config"
+	"parrot/internal/session"
+	"parrot/pkg/helper"
 	"strings"
 	"time"
 
@@ -20,10 +22,12 @@ func AuthorizationInterceptor() grpc.ServerOption {
 		fmt.Println(info.FullMethod)
 
 		// authorize token
-		err = authorizeToken(ctx, info.FullMethod)
+		ss, err := authorizeToken(ctx, info.FullMethod)
 		if err != nil {
 			return resp, err
 		}
+
+		ctx = session.Set(ctx, ss)
 
 		resp, err = handler(ctx, req)
 
@@ -32,20 +36,20 @@ func AuthorizationInterceptor() grpc.ServerOption {
 	})
 }
 
-func authorizeToken(ctx context.Context, uri string) error {
+func authorizeToken(ctx context.Context, uri string) (*session.Session, error) {
 
 	if uri == "/svc.Auth/Login" {
-		return nil
+		return nil, nil
 	}
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return fmt.Errorf("missing metadata")
+		return nil, fmt.Errorf("missing metadata")
 	}
 
 	values := md["authorization"]
 	if len(values) == 0 {
-		return fmt.Errorf("authorization token is not provided")
+		return nil, fmt.Errorf("authorization token is not provided")
 	}
 
 	accessToken := values[0]
@@ -57,14 +61,20 @@ func authorizeToken(ctx context.Context, uri string) error {
 	})
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			return fmt.Errorf("Invalid signature")
+			return nil, fmt.Errorf("Invalid signature")
 		}
-		return fmt.Errorf("Cannot parse token")
+		return nil, fmt.Errorf("Cannot parse token")
 	}
 
 	if !token.Valid {
-		return fmt.Errorf("Unauthorized")
+		return nil, fmt.Errorf("Unauthorized")
 	}
 
-	return nil
+	var ss = &session.Session{
+		UserID:   claim.Audience,
+		Token:    tokenStr,
+		ExpireAt: helper.TimeFromUnixTimeStamp(claim.ExpiresAt),
+	}
+
+	return ss, nil
 }

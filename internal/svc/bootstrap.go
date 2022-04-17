@@ -39,6 +39,7 @@ func NewService() *grpc.Server {
 
 	// resetDB use only in dev env
 	if resetDB && config.Get().Environment == config.EnvDEV {
+		log.Println("reset & dump db...")
 		err := db.ResetDB(dbconn)
 		if err != nil {
 			log.Fatal(err)
