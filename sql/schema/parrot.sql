@@ -15,7 +15,7 @@ create table bill (
     amount float,
     description varchar(200),
     pay_type varchar(100),
-    created_on varchar(50),
+    created_on datetime,
     payer_id varchar(20),
     receipt_id char(23)
 );

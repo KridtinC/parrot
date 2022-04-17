@@ -23,9 +23,9 @@ func NewBill(billUseCase billUseCase) *BillEndpoint {
 // Add add bill
 func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddBillRequest) (*svc.AddBillResponse, error) {
 
-	log.Printf("called add, type %s list %v amount %v\n", req.GetPayType(), req.GetHalvedForList(), req.GetAmount())
+	log.Printf("called add, type %s list %v amount %v\n", req.GetPayType(), req.GetPayeeList(), req.GetAmount())
 
-	err := b.billUseCase.Create(ctx, entity.PayTypeFromProtoMap[req.GetPayType()], req.GetHalvedForList(), float32(req.GetAmount()))
+	err := b.billUseCase.Create(ctx, entity.PayTypeFromProtoMap[req.GetPayType()], req.GetPayeeList(), float32(req.GetAmount()))
 	if err != nil {
 		return nil, err
 	}

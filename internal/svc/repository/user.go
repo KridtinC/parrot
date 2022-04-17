@@ -30,7 +30,7 @@ func (u *UserRepository) Get(ctx context.Context, userID string) (*entity.User, 
 
 	result := u.DBConn.QueryRowContext(ctx, queryString, userID)
 
-	err := db.Scan(result, user)
+	err := db.ScanAll(result, user)
 	if err != nil {
 		if meta.IsDBNotFoundError(err) {
 			log.Printf("not found key %s", userID)

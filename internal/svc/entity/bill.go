@@ -1,14 +1,32 @@
 package entity
 
-import billpb "parrot/proto/svc/bill"
+import (
+	billpb "parrot/proto/svc/bill"
+	"time"
+)
 
-// Bill bill entity collect who is payer/payee, and also amount
+// Bill bill entity collect who is payer, and also amount
 type Bill struct {
-	BillID  string
-	PayerID string
+	BillID      string
+	Amount      float32
+	Description string
+	PayType     PayType
+	CreatedOn   time.Time
+	PayerID     string
+	ReceiptID   string
+}
+
+// BillInfo bill including payee
+type BillInfo struct {
+	*Bill
+	PayeeList []*PayeeInfo
+}
+
+type PayeeInfo struct {
 	PayeeID string
-	Amount  float32
-	PayType PayType
+	BillID  string
+	PaidOn  time.Time
+	IsPaid  bool
 }
 
 // ToProto convert bill to proto
@@ -16,7 +34,7 @@ func (b *Bill) ToProto() *billpb.Bill {
 	return &billpb.Bill{
 		BillId:  b.BillID,
 		PayerId: b.PayerID,
-		PayeeId: b.PayeeID,
+		// PayeeId: b.PayeeID,
 		Amount:  b.Amount,
 		PayType: PayTypeToProtoMap[b.PayType],
 	}

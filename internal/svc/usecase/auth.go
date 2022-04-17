@@ -9,16 +9,19 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
+// AuthUseCase auth usecase
 type AuthUseCase struct {
 	userRepository userRepository
 }
 
+// NewAuth new auth usecase instance
 func NewAuth(userRepository userRepository) *AuthUseCase {
 	return &AuthUseCase{
 		userRepository: userRepository,
 	}
 }
 
+// Login login into parrot
 func (a *AuthUseCase) Login(ctx context.Context, userID string) (string, error) {
 	_, err := a.userRepository.Get(ctx, userID)
 	if err != nil {
