@@ -31,11 +31,11 @@ func (b *BillRepository) Get(ctx context.Context, billID string) (*entity.Bill, 
 
 	result := b.DBConn.QueryRowContext(ctx, queryString, billID)
 
-	err := result.Scan(&bill.BillID, &bill.PayerID, &bill.PayeeID, &bill.Amount, &bill.PayType)
+	err := db.Scan(result, bill)
 	if err != nil {
 		if meta.IsDBNotFoundError(err) {
 			log.Printf("not found key %s", billID)
-			return nil, fmt.Errorf("not found key %s", billID)
+			return nil, err
 		}
 		log.Printf("scan bill err %s key %s", err.Error(), billID)
 		return nil, err

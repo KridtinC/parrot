@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"reflect"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -11,6 +12,20 @@ import (
 type MySQLConnection struct {
 	*sql.DB
 	DBName string
+}
+
+func Scan(result *sql.Row, x interface{}) error {
+
+	val := reflect.ValueOf(x).Elem()
+
+	v := make([]interface{}, val.NumField())
+
+	for i := 0; i < val.NumField(); i++ {
+		valueField := val.Field(i)
+		v[i] = valueField.Addr().Interface()
+	}
+
+	return result.Scan(v...)
 }
 
 // OpenMySQLConnection open mysql connection
