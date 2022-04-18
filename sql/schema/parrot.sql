@@ -4,7 +4,7 @@ use parrot;
 
 create table user (
 	user_id varchar(20) primary key not null,
-    password varchar(20),
+    password char(64),
     first_name varchar(50),
     last_name varchar(50),
     tel_no char(10)

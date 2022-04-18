@@ -2,6 +2,9 @@ package usecase
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"parrot/internal/config"
 	"parrot/pkg/meta"
 	"time"
@@ -22,13 +25,22 @@ func NewAuth(userRepository userRepository) *AuthUseCase {
 }
 
 // Login login into parrot
-func (a *AuthUseCase) Login(ctx context.Context, userID string) (string, error) {
-	_, err := a.userRepository.Get(ctx, userID)
+func (a *AuthUseCase) Login(ctx context.Context, userID, password string) (string, error) {
+	user, err := a.userRepository.Get(ctx, userID)
 	if err != nil {
 		if meta.IsDBNotFoundError(err) {
 			return "", err
 		}
 		return "", err
+	}
+
+	// hash input password
+	hsha := sha256.New()
+	hsha.Write([]byte(password))
+	hashedInputPassword := hex.EncodeToString(hsha.Sum(nil))
+
+	if user.Password != hashedInputPassword {
+		return "", fmt.Errorf("invalid password")
 	}
 
 	var now = time.Now()

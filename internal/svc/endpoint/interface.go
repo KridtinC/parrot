@@ -15,5 +15,5 @@ type userUseCase interface {
 }
 
 type authUseCase interface {
-	Login(ctx context.Context, userID string) (string, error)
+	Login(ctx context.Context, userID, password string) (string, error)
 }
