@@ -7,10 +7,11 @@ import { BillClient } from './proto/svc/Bill_apiServiceClientPb'
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
+import { GetToken } from './Utils';
 
 function App() {
 
-  var isLogin = localStorage.getItem('token')
+  var isLogin = GetToken()
   var navigate = useNavigate()
 
   useEffect(() => {

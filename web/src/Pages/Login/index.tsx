@@ -2,12 +2,13 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Loggingin } from "../../Services/Auth";
+import { GetToken } from "../../Utils";
 import './Form.css'
 
 
 let Login = () => {
 
-    var isLogin = localStorage.getItem('token')
+    var isLogin = GetToken()
     var navigate = useNavigate()
     var [userName, setUserName] = useState('')
     var [password, setPassword] = useState('')
@@ -40,6 +41,7 @@ let Login = () => {
     }, [isLogin]);
 
     return <>
+    <h2>Login</h2>
         <Form className="login-form" onSubmit={SubmitForm}>
             <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>User Name</Form.Label>

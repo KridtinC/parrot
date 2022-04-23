@@ -23,6 +23,7 @@ let Home = () => {
     }
 
     return <>
+        <h1>Add Bill</h1>
         <Form className="bill-form" onSubmit={SubmitForm}>
             <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>User Name</Form.Label>

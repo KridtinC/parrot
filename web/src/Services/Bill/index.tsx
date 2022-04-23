@@ -1,5 +1,6 @@
 import { BillClient } from "../../proto/svc/Bill_apiServiceClientPb";
 import { AddBillRequest, AddBillResponse } from "../../proto/svc/bill_api_pb";
+import { GetToken } from "../../Utils";
 
 var billService = new BillClient('http://localhost:5000')
 
@@ -13,7 +14,7 @@ var AddBill = async (username: string, amount: number, payType: number): Promise
 
     try {
         var response = await billService.add(request, {
-            'authorization': 'Bearer ' + localStorage.getItem('token')
+            'authorization': 'Bearer ' + GetToken()
         })
 
         console.log('add successed')
