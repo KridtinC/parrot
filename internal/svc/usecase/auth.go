@@ -4,7 +4,6 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"parrot/internal/config"
 	"parrot/pkg/meta"
 	"time"
@@ -29,9 +28,9 @@ func (a *AuthUseCase) Login(ctx context.Context, userID, password string) (strin
 	user, err := a.userRepository.Get(ctx, userID)
 	if err != nil {
 		if meta.IsDBNotFoundError(err) {
-			return "", err
+			return "", meta.ErrorInvalidUserPass()
 		}
-		return "", err
+		return "", meta.ErrorInternalServer(err)
 	}
 
 	// hash input password
@@ -40,7 +39,7 @@ func (a *AuthUseCase) Login(ctx context.Context, userID, password string) (strin
 	hashedInputPassword := hex.EncodeToString(hsha.Sum(nil))
 
 	if user.Password != hashedInputPassword {
-		return "", fmt.Errorf("invalid password")
+		return "", meta.ErrorInvalidUserPass()
 	}
 
 	var now = time.Now()
@@ -56,7 +55,7 @@ func (a *AuthUseCase) Login(ctx context.Context, userID, password string) (strin
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenStr, err := token.SignedString(config.Get().JWTSecretKey)
 	if err != nil {
-		return "", err
+		return "", meta.ErrorInternalServer(err)
 	}
 
 	return tokenStr, nil

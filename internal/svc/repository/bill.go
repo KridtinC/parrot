@@ -99,7 +99,7 @@ func (b *BillRepository) Create(ctx context.Context, bill *entity.BillInfo) erro
 	var queryString = fmt.Sprintf("insert into %s.bill values (?, ?, ?, ?, ?, ?, ?);", b.DBConn.DBName)
 
 	if bill == nil {
-		log.Println("cannot insrt empty bill")
+		log.Println("cannot insert empty bill")
 		return fmt.Errorf("cannot insert empty bill")
 	}
 

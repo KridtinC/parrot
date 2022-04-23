@@ -53,10 +53,11 @@ func NewService() *grpc.Server {
 
 	// init instace for services
 	billRepository := repository.NewBill(dbconn)
-	billUseCase := usecase.NewBill(billRepository)
+	userRepository := repository.NewUser(dbconn)
+
+	billUseCase := usecase.NewBill(billRepository, userRepository)
 	billEndpoint := endpoint.NewBill(billUseCase)
 
-	userRepository := repository.NewUser(dbconn)
 	userUseCase := usecase.NewUser(userRepository)
 	userEndpoint := endpoint.NewUser(userUseCase)
 
