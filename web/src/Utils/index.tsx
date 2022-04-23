@@ -11,6 +11,12 @@ var GetToken = (): string => {
     return ""
 }
 
+var ResetToken = () => {
+    sessionStorage.clear()
+    localStorage.clear()
+}
+
 export {
-    GetToken
+    GetToken,
+    ResetToken
 }

@@ -7,6 +7,7 @@ import (
 	"parrot/internal/config"
 	"parrot/internal/session"
 	"parrot/pkg/helper"
+	"parrot/pkg/meta"
 	"strings"
 	"time"
 
@@ -44,12 +45,12 @@ func authorizeToken(ctx context.Context, uri string) (*session.Session, error) {
 
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return nil, fmt.Errorf("missing metadata")
+		return nil, meta.ErrorInternalServer(fmt.Errorf("missing metadata"))
 	}
 
 	values := md["authorization"]
 	if len(values) == 0 {
-		return nil, fmt.Errorf("authorization token is not provided")
+		return nil, meta.ErrorInvalidSession()
 	}
 
 	accessToken := values[0]
@@ -61,13 +62,13 @@ func authorizeToken(ctx context.Context, uri string) (*session.Session, error) {
 	})
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			return nil, fmt.Errorf("Invalid signature")
+			return nil, meta.ErrorInvalidSession()
 		}
-		return nil, fmt.Errorf("Cannot parse token")
+		return nil, meta.ErrorInvalidSession()
 	}
 
 	if !token.Valid {
-		return nil, fmt.Errorf("Unauthorized")
+		return nil, meta.ErrorSessionExpired()
 	}
 
 	var ss = &session.Session{

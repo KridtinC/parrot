@@ -44,7 +44,7 @@ func (a *AuthUseCase) Login(ctx context.Context, userID, password string) (strin
 
 	var now = time.Now()
 
-	expiresAt := now.Add(15 * time.Minute)
+	expiresAt := now.Add(1 * time.Minute)
 
 	claims := &jwt.StandardClaims{
 		ExpiresAt: expiresAt.Unix(),

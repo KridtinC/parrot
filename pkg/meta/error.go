@@ -24,3 +24,13 @@ func ErrorInternalServer(err error) error {
 func ErrorPayeeNotFound(payeeID string) error {
 	return status.Errorf(codes.NotFound, "Payee %s not found", payeeID)
 }
+
+// ErrorInvalidSession session found, but invalid
+func ErrorInvalidSession() error {
+	return status.Error(codes.Unauthenticated, "Invalid session")
+}
+
+// ErrorSessionExpired session already expired
+func ErrorSessionExpired() error {
+	return status.Error(codes.Unauthenticated, "Session expired, please login again")
+}
