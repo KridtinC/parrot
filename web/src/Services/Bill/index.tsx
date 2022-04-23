@@ -21,7 +21,7 @@ var AddBill = async (username: string, amount: number, payType: number): Promise
         return response
     } catch (e) {
         console.log(e)
-        throw console.error(e);
+        throw e;
     }
 }
 

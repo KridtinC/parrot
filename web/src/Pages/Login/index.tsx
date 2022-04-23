@@ -1,3 +1,4 @@
+import { RpcError } from "grpc-web";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +30,11 @@ let Login = () => {
             }
             navigate("/")
         } catch (e) {
-            alert('invalid username or password')
+            if (e instanceof RpcError) {
+                alert(e.message)
+            } else {
+                alert('unknown error' + e)
+            }
         }
 
     }
@@ -41,7 +46,7 @@ let Login = () => {
     }, [isLogin]);
 
     return <>
-    <h2>Login</h2>
+        <h2>Login</h2>
         <Form className="login-form" onSubmit={SubmitForm}>
             <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>User Name</Form.Label>
