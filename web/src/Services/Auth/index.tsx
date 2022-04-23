@@ -16,7 +16,7 @@ var Loggingin = async (username: string, password: string): Promise<LoginRespons
 
   } catch (e) {
     console.log(e)
-    throw console.error(e);
+    throw e;
   }
 }
 

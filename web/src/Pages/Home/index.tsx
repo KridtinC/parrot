@@ -1,3 +1,4 @@
+import { RpcError } from "grpc-web"
 import { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { AddBill } from "../../Services/Bill"
@@ -17,7 +18,11 @@ let Home = () => {
         try {
             await AddBill(userName, amount, payType)
         } catch (e) {
-            alert('error' + e)
+            if (e instanceof RpcError) {
+                alert(e.message)
+            } else {
+                alert('unknown error' + e)
+            }
         }
 
     }
