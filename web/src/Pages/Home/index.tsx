@@ -15,7 +15,7 @@ let Home = () => {
         console.log(userName, amount, payType)
 
         try {
-            let response = await AddBill(userName, amount, payType)
+            await AddBill(userName, amount, payType)
         } catch (e) {
             alert('error' + e)
         }
