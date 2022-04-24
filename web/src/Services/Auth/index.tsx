@@ -3,7 +3,7 @@ import { LoginRequest, LoginResponse } from "../../proto/svc/auth_api_pb";
 
 var authService = new AuthClient('http://localhost:5000')
 
-var Loggingin = async (username: string, password: string): Promise<LoginResponse> => {
+var Login = async (username: string, password: string): Promise<LoginResponse> => {
   var request = new LoginRequest();
 
   request.setUserId(username);
@@ -21,5 +21,5 @@ var Loggingin = async (username: string, password: string): Promise<LoginRespons
 }
 
 export {
-  Loggingin
+  Login
 }

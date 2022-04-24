@@ -11,6 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
+var google_protobuf_timestamp_pb = require('google-protobuf/google/protobuf/timestamp_pb.js');
 goog.exportSymbol('proto.svc.bill.Bill', null, global);
 goog.exportSymbol('proto.svc.bill.PayType', null, global);
 
@@ -61,10 +62,12 @@ proto.svc.bill.Bill.prototype.toObject = function(opt_includeInstance) {
 proto.svc.bill.Bill.toObject = function(includeInstance, msg) {
   var f, obj = {
     billId: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    payerId: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    payeeId: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    amount: +jspb.Message.getFieldWithDefault(msg, 4, 0.0),
-    payType: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    amount: +jspb.Message.getFieldWithDefault(msg, 2, 0.0),
+    description: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    payType: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    createdOn: (f = msg.getCreatedOn()) && google_protobuf_timestamp_pb.Timestamp.toObject(includeInstance, f),
+    payerId: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    receiptId: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -106,20 +109,29 @@ proto.svc.bill.Bill.deserializeBinaryFromReader = function(msg, reader) {
       msg.setBillId(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setPayerId(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setPayeeId(value);
-      break;
-    case 4:
       var value = /** @type {number} */ (reader.readFloat());
       msg.setAmount(value);
       break;
-    case 5:
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setDescription(value);
+      break;
+    case 4:
       var value = /** @type {!proto.svc.bill.PayType} */ (reader.readEnum());
       msg.setPayType(value);
+      break;
+    case 5:
+      var value = new google_protobuf_timestamp_pb.Timestamp;
+      reader.readMessage(value,google_protobuf_timestamp_pb.Timestamp.deserializeBinaryFromReader);
+      msg.setCreatedOn(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPayerId(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReceiptId(value);
       break;
     default:
       reader.skipField();
@@ -157,31 +169,46 @@ proto.svc.bill.Bill.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getPayerId();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getAmount();
+  if (f !== 0.0) {
+    writer.writeFloat(
       2,
       f
     );
   }
-  f = message.getPayeeId();
+  f = message.getDescription();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getAmount();
+  f = message.getPayType();
   if (f !== 0.0) {
-    writer.writeFloat(
+    writer.writeEnum(
       4,
       f
     );
   }
-  f = message.getPayType();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getCreatedOn();
+  if (f != null) {
+    writer.writeMessage(
       5,
+      f,
+      google_protobuf_timestamp_pb.Timestamp.serializeBinaryToWriter
+    );
+  }
+  f = message.getPayerId();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getReceiptId();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -204,62 +231,107 @@ proto.svc.bill.Bill.prototype.setBillId = function(value) {
 
 
 /**
- * optional string payer_id = 2;
- * @return {string}
- */
-proto.svc.bill.Bill.prototype.getPayerId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.svc.bill.Bill.prototype.setPayerId = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string payee_id = 3;
- * @return {string}
- */
-proto.svc.bill.Bill.prototype.getPayeeId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/** @param {string} value */
-proto.svc.bill.Bill.prototype.setPayeeId = function(value) {
-  jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional float amount = 4;
+ * optional float amount = 2;
  * @return {number}
  */
 proto.svc.bill.Bill.prototype.getAmount = function() {
-  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 4, 0.0));
+  return /** @type {number} */ (+jspb.Message.getFieldWithDefault(this, 2, 0.0));
 };
 
 
 /** @param {number} value */
 proto.svc.bill.Bill.prototype.setAmount = function(value) {
-  jspb.Message.setProto3FloatField(this, 4, value);
+  jspb.Message.setProto3FloatField(this, 2, value);
 };
 
 
 /**
- * optional PayType pay_type = 5;
+ * optional string description = 3;
+ * @return {string}
+ */
+proto.svc.bill.Bill.prototype.getDescription = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.svc.bill.Bill.prototype.setDescription = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional PayType pay_type = 4;
  * @return {!proto.svc.bill.PayType}
  */
 proto.svc.bill.Bill.prototype.getPayType = function() {
-  return /** @type {!proto.svc.bill.PayType} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+  return /** @type {!proto.svc.bill.PayType} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
 /** @param {!proto.svc.bill.PayType} value */
 proto.svc.bill.Bill.prototype.setPayType = function(value) {
-  jspb.Message.setProto3EnumField(this, 5, value);
+  jspb.Message.setProto3EnumField(this, 4, value);
+};
+
+
+/**
+ * optional google.protobuf.Timestamp created_on = 5;
+ * @return {?proto.google.protobuf.Timestamp}
+ */
+proto.svc.bill.Bill.prototype.getCreatedOn = function() {
+  return /** @type{?proto.google.protobuf.Timestamp} */ (
+    jspb.Message.getWrapperField(this, google_protobuf_timestamp_pb.Timestamp, 5));
+};
+
+
+/** @param {?proto.google.protobuf.Timestamp|undefined} value */
+proto.svc.bill.Bill.prototype.setCreatedOn = function(value) {
+  jspb.Message.setWrapperField(this, 5, value);
+};
+
+
+proto.svc.bill.Bill.prototype.clearCreatedOn = function() {
+  this.setCreatedOn(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {!boolean}
+ */
+proto.svc.bill.Bill.prototype.hasCreatedOn = function() {
+  return jspb.Message.getField(this, 5) != null;
+};
+
+
+/**
+ * optional string payer_id = 6;
+ * @return {string}
+ */
+proto.svc.bill.Bill.prototype.getPayerId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/** @param {string} value */
+proto.svc.bill.Bill.prototype.setPayerId = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string receipt_id = 7;
+ * @return {string}
+ */
+proto.svc.bill.Bill.prototype.getReceiptId = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/** @param {string} value */
+proto.svc.bill.Bill.prototype.setReceiptId = function(value) {
+  jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

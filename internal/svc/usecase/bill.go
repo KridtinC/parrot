@@ -39,7 +39,7 @@ func (b *BillUseCase) Get(ctx context.Context, billID string) (*entity.Bill, err
 }
 
 // Create create bill and store in db
-func (b *BillUseCase) Create(ctx context.Context, payType entity.PayType, payeeList []string, totalAmount float32) error {
+func (b *BillUseCase) Create(ctx context.Context, payType entity.PayType, payeeList []string, totalAmount float32, description string) error {
 
 	for _, payeeID := range payeeList {
 		_, err := b.userRepository.Get(ctx, payeeID)
@@ -61,7 +61,7 @@ func (b *BillUseCase) Create(ctx context.Context, payType entity.PayType, payeeL
 				PayType:     payType,
 				PayerID:     ss.UserID,
 				CreatedOn:   now,
-				Description: "",
+				Description: description,
 			},
 			PayeeList: make([]*entity.PayeeInfo, 0),
 		}
@@ -82,4 +82,15 @@ func (b *BillUseCase) Create(ctx context.Context, payType entity.PayType, payeeL
 	}
 
 	return nil
+}
+
+// GetAll get all bills
+func (b *BillUseCase) GetAll(ctx context.Context, onlyMe bool) ([]*entity.Bill, error) {
+
+	bills, err := b.billRepository.GetAll(ctx, onlyMe)
+	if err != nil {
+		return nil, meta.ErrorInternalServer(err)
+	}
+
+	return bills, nil
 }

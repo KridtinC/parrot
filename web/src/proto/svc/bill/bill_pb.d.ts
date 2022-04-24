@@ -1,22 +1,31 @@
 import * as jspb from 'google-protobuf'
 
+import * as google_protobuf_timestamp_pb from 'google-protobuf/google/protobuf/timestamp_pb';
 
 
 export class Bill extends jspb.Message {
   getBillId(): string;
   setBillId(value: string): Bill;
 
-  getPayerId(): string;
-  setPayerId(value: string): Bill;
-
-  getPayeeId(): string;
-  setPayeeId(value: string): Bill;
-
   getAmount(): number;
   setAmount(value: number): Bill;
 
+  getDescription(): string;
+  setDescription(value: string): Bill;
+
   getPayType(): PayType;
   setPayType(value: PayType): Bill;
+
+  getCreatedOn(): google_protobuf_timestamp_pb.Timestamp | undefined;
+  setCreatedOn(value?: google_protobuf_timestamp_pb.Timestamp): Bill;
+  hasCreatedOn(): boolean;
+  clearCreatedOn(): Bill;
+
+  getPayerId(): string;
+  setPayerId(value: string): Bill;
+
+  getReceiptId(): string;
+  setReceiptId(value: string): Bill;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): Bill.AsObject;
@@ -29,10 +38,12 @@ export class Bill extends jspb.Message {
 export namespace Bill {
   export type AsObject = {
     billId: string,
-    payerId: string,
-    payeeId: string,
     amount: number,
+    description: string,
     payType: PayType,
+    createdOn?: google_protobuf_timestamp_pb.Timestamp.AsObject,
+    payerId: string,
+    receiptId: string,
   }
 }
 

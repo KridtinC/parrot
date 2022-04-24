@@ -1,7 +1,9 @@
 package repository
 
 import (
+	"context"
 	"parrot/internal/config"
+	"parrot/internal/session"
 	"parrot/pkg/db"
 )
 
@@ -20,4 +22,13 @@ func PrepareDB() *db.MySQLConnection {
 	}
 
 	return dbconn
+}
+
+func ContextWithSession() context.Context {
+	var ctx = context.Background()
+	var ss = &session.Session{
+		UserID: "kanktch",
+		Token:  "test",
+	}
+	return session.Set(ctx, ss)
 }

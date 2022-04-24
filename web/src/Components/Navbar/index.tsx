@@ -26,6 +26,7 @@ const ParrotNav = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/bill">My Bill</Nav.Link>
                     <Nav.Link href="/receipt">Receipt</Nav.Link>
                 </Nav>
                 <Nav className="ms-auto">

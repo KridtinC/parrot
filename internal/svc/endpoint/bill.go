@@ -24,13 +24,13 @@ func NewBill(billUseCase billUseCase) *BillEndpoint {
 // Add add bill
 func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddBillRequest) (*svc.AddBillResponse, error) {
 
-	log.Printf("called add, type %s list %v amount %v\n", req.GetPayType(), req.GetPayeeList(), req.GetAmount())
+	log.Printf("called add, type %s list %v amount %v description %s\n", req.GetPayType(), req.GetPayeeList(), req.GetAmount(), req.GetDescription())
 
 	if len(req.GetPayeeList()) == 0 {
 		return nil, meta.ErrorMissingField("Payee List")
 	}
 
-	err := b.billUseCase.Create(ctx, entity.PayTypeFromProtoMap[req.GetPayType()], req.GetPayeeList(), float32(req.GetAmount()))
+	err := b.billUseCase.Create(ctx, entity.PayTypeFromProtoMap[req.GetPayType()], req.GetPayeeList(), float32(req.GetAmount()), req.GetDescription())
 	if err != nil {
 		return nil, err
 	}
@@ -53,4 +53,18 @@ func (b *BillEndpoint) Get(ctx context.Context, req *svc.GetBillRequest) (*svc.G
 	return &svc.GetBillResponse{
 		Bill: bill.ToProto(),
 	}, nil
+}
+
+// GetAll get all bills to show in list filter by me or not
+func (b *BillEndpoint) GetAll(ctx context.Context, req *svc.GetAllBillRequest) (*svc.GetAllBillResponse, error) {
+
+	bills, err := b.billUseCase.GetAll(ctx, req.GetOnlyMe())
+	if err != nil {
+		return nil, err
+	}
+
+	return &svc.GetAllBillResponse{
+		BillList: BillsToProto(bills),
+	}, nil
+
 }

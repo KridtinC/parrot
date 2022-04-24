@@ -1,14 +1,20 @@
-import React, { useEffect } from 'react';
-import logo from './logo.svg';
+import { useEffect } from 'react';
 import './App.css';
 
-import { AddBillRequest } from './proto/svc/bill_api_pb'
-import { BillClient } from './proto/svc/Bill_apiServiceClientPb'
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import Login from './Pages/Login';
-import Home from './Pages/Home';
+import LoginPage from './Pages/Login';
+import HomePage from './Pages/Home';
 import { GetToken } from './Utils';
 import { ParrotNav } from './Components/Navbar';
+import BillPage from './Pages/Bill';
+import ReceiptPage from './Pages/Receipt';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
 
@@ -22,15 +28,17 @@ function App() {
   }, [isLogin]);
 
   return (
-    <>
+    <ThemeProvider theme={darkTheme}>
       <ParrotNav />
       <div className="App">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/bill" element={<BillPage />} />
+          <Route path="/receipt" element={<ReceiptPage />} />
         </Routes>
       </div>
-    </>
+    </ThemeProvider>
 
   );
 }

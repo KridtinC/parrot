@@ -5,13 +5,13 @@ import { AddBill } from "../../Services/Bill"
 import { GetUserNames } from "../../Services/User"
 import './Home.css'
 
-let Home = () => {
+let HomePage = () => {
 
-    // var [userName, setUserName] = useState('')
     var [userNames, setUserNames] = useState([] as string[])
     var selectedUserNames = [] as string[]
     var [amount, setAmount] = useState(0.0)
     var [payType, setPayType] = useState(0)
+    var [desc, setDesc] = useState('');
 
     var SubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -24,7 +24,7 @@ let Home = () => {
         console.log(selectedUserNames, amount, payType)
 
         try {
-            await AddBill(selectedUserNames, amount, payType)
+            await AddBill(selectedUserNames, amount, payType, desc)
         } catch (e) {
             if (e instanceof RpcError) {
                 alert(e.message)
@@ -70,7 +70,6 @@ let Home = () => {
         <Form className="bill-form" onSubmit={SubmitForm}>
             <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>User Name</Form.Label>
-                {/* <Form.Control type="text" placeholder="Enter username" onChange={e => setUserName(e.target.value)} /> */}
                 <div className="bill-form-usernames">
                     {
                         userNames.map((userName) => {
@@ -80,7 +79,10 @@ let Home = () => {
                 </div>
 
             </Form.Group>
-
+            <Form.Group className="mb-3" controlId="formBasicAmount">
+                <Form.Label>Description</Form.Label>
+                <Form.Control type="text" placeholder="Enter description" onChange={e => setDesc(e.target.value)} required />
+            </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicAmount">
                 <Form.Label>Amount</Form.Label>
@@ -110,4 +112,4 @@ let Home = () => {
     </>
 }
 
-export default Home
+export default HomePage

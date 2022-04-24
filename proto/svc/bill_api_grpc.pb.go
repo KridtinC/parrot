@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion7
 type BillClient interface {
 	Add(ctx context.Context, in *AddBillRequest, opts ...grpc.CallOption) (*AddBillResponse, error)
 	Get(ctx context.Context, in *GetBillRequest, opts ...grpc.CallOption) (*GetBillResponse, error)
+	GetAll(ctx context.Context, in *GetAllBillRequest, opts ...grpc.CallOption) (*GetAllBillResponse, error)
 }
 
 type billClient struct {
@@ -48,12 +49,22 @@ func (c *billClient) Get(ctx context.Context, in *GetBillRequest, opts ...grpc.C
 	return out, nil
 }
 
+func (c *billClient) GetAll(ctx context.Context, in *GetAllBillRequest, opts ...grpc.CallOption) (*GetAllBillResponse, error) {
+	out := new(GetAllBillResponse)
+	err := c.cc.Invoke(ctx, "/svc.Bill/GetAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BillServer is the server API for Bill service.
 // All implementations must embed UnimplementedBillServer
 // for forward compatibility
 type BillServer interface {
 	Add(context.Context, *AddBillRequest) (*AddBillResponse, error)
 	Get(context.Context, *GetBillRequest) (*GetBillResponse, error)
+	GetAll(context.Context, *GetAllBillRequest) (*GetAllBillResponse, error)
 	mustEmbedUnimplementedBillServer()
 }
 
@@ -66,6 +77,9 @@ func (UnimplementedBillServer) Add(context.Context, *AddBillRequest) (*AddBillRe
 }
 func (UnimplementedBillServer) Get(context.Context, *GetBillRequest) (*GetBillResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedBillServer) GetAll(context.Context, *GetAllBillRequest) (*GetAllBillResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
 func (UnimplementedBillServer) mustEmbedUnimplementedBillServer() {}
 
@@ -116,6 +130,24 @@ func _Bill_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Bill_GetAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllBillRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BillServer).GetAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/svc.Bill/GetAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BillServer).GetAll(ctx, req.(*GetAllBillRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Bill_ServiceDesc is the grpc.ServiceDesc for Bill service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -130,6 +162,10 @@ var Bill_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _Bill_Get_Handler,
+		},
+		{
+			MethodName: "GetAll",
+			Handler:    _Bill_GetAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

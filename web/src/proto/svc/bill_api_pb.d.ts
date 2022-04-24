@@ -15,6 +15,9 @@ export class AddBillRequest extends jspb.Message {
   getAmount(): number;
   setAmount(value: number): AddBillRequest;
 
+  getDescription(): string;
+  setDescription(value: string): AddBillRequest;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): AddBillRequest.AsObject;
   static toObject(includeInstance: boolean, msg: AddBillRequest): AddBillRequest.AsObject;
@@ -28,6 +31,7 @@ export namespace AddBillRequest {
     payType: proto_svc_bill_bill_pb.PayType,
     payeeListList: Array<string>,
     amount: number,
+    description: string,
   }
 }
 
@@ -88,6 +92,44 @@ export class GetBillResponse extends jspb.Message {
 export namespace GetBillResponse {
   export type AsObject = {
     bill?: proto_svc_bill_bill_pb.Bill.AsObject,
+  }
+}
+
+export class GetAllBillRequest extends jspb.Message {
+  getOnlyMe(): boolean;
+  setOnlyMe(value: boolean): GetAllBillRequest;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllBillRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllBillRequest): GetAllBillRequest.AsObject;
+  static serializeBinaryToWriter(message: GetAllBillRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllBillRequest;
+  static deserializeBinaryFromReader(message: GetAllBillRequest, reader: jspb.BinaryReader): GetAllBillRequest;
+}
+
+export namespace GetAllBillRequest {
+  export type AsObject = {
+    onlyMe: boolean,
+  }
+}
+
+export class GetAllBillResponse extends jspb.Message {
+  getBillListList(): Array<proto_svc_bill_bill_pb.Bill>;
+  setBillListList(value: Array<proto_svc_bill_bill_pb.Bill>): GetAllBillResponse;
+  clearBillListList(): GetAllBillResponse;
+  addBillList(value?: proto_svc_bill_bill_pb.Bill, index?: number): proto_svc_bill_bill_pb.Bill;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllBillResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllBillResponse): GetAllBillResponse.AsObject;
+  static serializeBinaryToWriter(message: GetAllBillResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllBillResponse;
+  static deserializeBinaryFromReader(message: GetAllBillResponse, reader: jspb.BinaryReader): GetAllBillResponse;
+}
+
+export namespace GetAllBillResponse {
+  export type AsObject = {
+    billListList: Array<proto_svc_bill_bill_pb.Bill.AsObject>,
   }
 }
 

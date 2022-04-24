@@ -2,8 +2,10 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
+	"parrot/internal/session"
 	"parrot/internal/svc/entity"
 	"parrot/pkg/db"
 	"parrot/pkg/meta"
@@ -120,4 +122,54 @@ func (b *BillRepository) Create(ctx context.Context, bill *entity.BillInfo) erro
 	}
 
 	return nil
+}
+
+// GetAll get all bills entity from database (filter by only me flag)
+func (b *BillRepository) GetAll(ctx context.Context, onlyMe bool) ([]*entity.Bill, error) {
+
+	var (
+		bills       = make([]*entity.Bill, 0)
+		queryString string
+		result      *sql.Rows
+		err         error
+	)
+
+	if onlyMe {
+		var ss = session.MustGet(ctx)
+		queryString = fmt.Sprintf("select * from %s.bill b where payer_id = ?;", b.DBConn.DBName)
+		result, err = b.DBConn.QueryContext(ctx, queryString, ss.UserID)
+		if err != nil {
+			log.Printf("cannot get all bills err %s", err.Error())
+			return nil, err
+		}
+	} else {
+		queryString = fmt.Sprintf("select * from %s.bill b;", b.DBConn.DBName)
+		result, err = b.DBConn.QueryContext(ctx, queryString)
+		if err != nil {
+			log.Printf("cannot get all bills err %s", err.Error())
+			return nil, err
+		}
+	}
+
+	for {
+
+		var bill = &entity.Bill{}
+		if !result.Next() {
+			break
+		}
+
+		err = db.ScanAll(result, bill)
+		if err != nil {
+			if meta.IsDBNotFoundError(err) {
+				log.Printf("not found key %v", bill.Keys())
+				return nil, err
+			}
+			log.Printf("scan bill err %s key %s", err.Error(), bill.Keys())
+			return nil, err
+		}
+
+		bills = append(bills, bill)
+	}
+
+	return bills, nil
 }

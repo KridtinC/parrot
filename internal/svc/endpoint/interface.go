@@ -7,7 +7,8 @@ import (
 
 type billUseCase interface {
 	Get(ctx context.Context, billID string) (*entity.Bill, error)
-	Create(ctx context.Context, payType entity.PayType, halvedForList []string, amount float32) error
+	Create(ctx context.Context, payType entity.PayType, halvedForList []string, amount float32, description string) error
+	GetAll(ctx context.Context, onlyMe bool) ([]*entity.Bill, error)
 }
 
 type userUseCase interface {

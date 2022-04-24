@@ -3,6 +3,8 @@ package entity
 import (
 	billpb "parrot/proto/svc/bill"
 	"time"
+
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // Bill bill entity collect who is payer, and also amount
@@ -16,12 +18,18 @@ type Bill struct {
 	ReceiptID   string
 }
 
+// Keys return key of bill
+func (b *Bill) Keys() []string {
+	return []string{b.BillID}
+}
+
 // BillInfo bill including payee
 type BillInfo struct {
 	*Bill
 	PayeeList []*PayeeInfo
 }
 
+// PayeeInfo payee information
 type PayeeInfo struct {
 	PayeeID string
 	BillID  string
@@ -32,11 +40,13 @@ type PayeeInfo struct {
 // ToProto convert bill to proto
 func (b *Bill) ToProto() *billpb.Bill {
 	return &billpb.Bill{
-		BillId:  b.BillID,
-		PayerId: b.PayerID,
-		// PayeeId: b.PayeeID,
-		Amount:  b.Amount,
-		PayType: PayTypeToProtoMap[b.PayType],
+		BillId:      b.BillID,
+		Amount:      b.Amount,
+		Description: b.Description,
+		PayType:     PayTypeToProtoMap[b.PayType],
+		CreatedOn:   timestamppb.New(b.CreatedOn),
+		PayerId:     b.PayerID,
+		ReceiptId:   b.ReceiptID,
 	}
 }
 
@@ -46,6 +56,7 @@ var PayTypeToProtoMap = map[PayType]billpb.PayType{
 	PayTypeAdvanced: billpb.PayType_BillTypeAdvanced,
 }
 
+// PayTypeFromProtoMap paytype mapped from proto enum to proto
 var PayTypeFromProtoMap = map[billpb.PayType]PayType{
 	billpb.PayType_BillTypeInvalid:  "",
 	billpb.PayType_BillTypeHalved:   PayTypeHalved,

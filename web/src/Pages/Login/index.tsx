@@ -2,12 +2,12 @@ import { RpcError } from "grpc-web";
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Loggingin } from "../../Services/Auth";
+import { Login } from "../../Services/Auth";
 import { GetToken } from "../../Utils";
 import './Form.css'
 
 
-let Login = () => {
+let LoginPage = () => {
 
     var isLogin = GetToken()
     var navigate = useNavigate()
@@ -21,7 +21,7 @@ let Login = () => {
         console.log(userName, password, rememberMe)
 
         try {
-            let response = await Loggingin(userName, password)
+            let response = await Login(userName, password)
 
             if (rememberMe) {
                 localStorage.setItem('token', response.getToken())
@@ -67,4 +67,4 @@ let Login = () => {
     </>
 }
 
-export default Login
+export default LoginPage
