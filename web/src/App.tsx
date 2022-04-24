@@ -8,6 +8,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
 import { GetToken } from './Utils';
+import { ParrotNav } from './Components/Navbar';
 
 function App() {
 
@@ -21,12 +22,16 @@ function App() {
   }, [isLogin]);
 
   return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </div>
+    <>
+      <ParrotNav />
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+    </>
+
   );
 }
 

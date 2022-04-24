@@ -20,7 +20,7 @@ import (
 func AuthorizationInterceptor() grpc.ServerOption {
 	return grpc.UnaryInterceptor(func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 		start := time.Now()
-		fmt.Println(info.FullMethod)
+		log.Printf(info.FullMethod)
 
 		// authorize token
 		ss, err := authorizeToken(ctx, info.FullMethod)
