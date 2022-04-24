@@ -68,25 +68,6 @@ let LoginPage = () => {
             </FormControl>
             <Button type="submit" variant="contained">Submit</Button>
         </form>
-
-
-        {/* <Form className="login-form" onSubmit={SubmitForm}>
-            <Form.Group className="mb-3" controlId="formBasicUserName">
-                <Form.Label>User Name</Form.Label>
-                <Form.Control type="text" placeholder="Enter username" onChange={e => setUserName(e.target.value)} />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicRememberMe">
-                <Form.Check type="checkbox" label="Remember me" onChange={e => setRememberMe(e.target.checked)} />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form> */}
     </>
 }
 
