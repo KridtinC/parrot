@@ -4,6 +4,9 @@
   "description": "an alternative money management like KhunThong for those who want to advance money first, and then check bill to others who has advanced money for at scheduled time.",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.6.2",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
@@ -11,10 +14,13 @@
     "@types/node": "^16.11.27",
     "@types/react": "^18.0.5",
     "@types/react-dom": "^18.0.1",
+    "bootstrap": "^5.1.3",
     "google-protobuf": "^3.20.1-rc.1",
     "grpc-web": "^1.3.1",
     "react": "^18.0.0",
+    "react-bootstrap": "^2.3.0",
     "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.6.3",
     "web-vitals": "^2.1.4"

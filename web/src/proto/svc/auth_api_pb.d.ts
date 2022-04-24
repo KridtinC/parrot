@@ -25,12 +25,6 @@ export namespace LoginRequest {
 }
 
 export class LoginResponse extends jspb.Message {
-  getStatusCode(): number;
-  setStatusCode(value: number): LoginResponse;
-
-  getErrDesc(): string;
-  setErrDesc(value: string): LoginResponse;
-
   getToken(): string;
   setToken(value: string): LoginResponse;
 
@@ -44,8 +38,6 @@ export class LoginResponse extends jspb.Message {
 
 export namespace LoginResponse {
   export type AsObject = {
-    statusCode: number,
-    errDesc: string,
     token: string,
   }
 }

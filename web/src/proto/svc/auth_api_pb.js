@@ -229,8 +229,6 @@ proto.svc.LoginResponse.prototype.toObject = function(opt_includeInstance) {
  */
 proto.svc.LoginResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
-    statusCode: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    errDesc: jspb.Message.getFieldWithDefault(msg, 2, ""),
     token: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
@@ -268,14 +266,6 @@ proto.svc.LoginResponse.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setStatusCode(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setErrDesc(value);
-      break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setToken(value);
@@ -309,20 +299,6 @@ proto.svc.LoginResponse.prototype.serializeBinary = function() {
  */
 proto.svc.LoginResponse.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getStatusCode();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getErrDesc();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
   f = message.getToken();
   if (f.length > 0) {
     writer.writeString(
@@ -330,36 +306,6 @@ proto.svc.LoginResponse.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-};
-
-
-/**
- * optional int32 status_code = 1;
- * @return {number}
- */
-proto.svc.LoginResponse.prototype.getStatusCode = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/** @param {number} value */
-proto.svc.LoginResponse.prototype.setStatusCode = function(value) {
-  jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string err_desc = 2;
- * @return {string}
- */
-proto.svc.LoginResponse.prototype.getErrDesc = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.svc.LoginResponse.prototype.setErrDesc = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
 };
 
 

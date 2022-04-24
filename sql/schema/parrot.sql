@@ -19,6 +19,7 @@ create table bill (
     payer_id varchar(20),
     receipt_id char(23)
 );
+create index bill_payer_id on bill (payer_id);
 
 create table receipt (
 	receipt_id char(23) primary key not null,

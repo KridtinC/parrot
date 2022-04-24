@@ -1,43 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useEffect } from 'react';
 import './App.css';
 
-import { AddBillRequest } from './proto/svc/bill_api_pb'
-import { BillClient } from './proto/svc/Bill_apiServiceClientPb'
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import LoginPage from './Pages/Login';
+import HomePage from './Pages/Home';
+import { GetToken } from './Utils';
+import { ParrotNav } from './Components/Navbar';
+import BillPage from './Pages/Bill';
+import ReceiptPage from './Pages/Receipt';
+import { createTheme, ThemeProvider } from '@mui/material';
 
-// for test
-
-var billService = new BillClient('http://localhost:5000')
-var request = new AddBillRequest();
-
-request.setPayType(1);
-request.setAmount(100);
-request.setPayeeListList(['koneba', 'smgu']);
-
-billService.add(request, {
-  'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJrYW5rdGNoIiwiZXhwIjoxNjUwNDAzMzQ5LCJpYXQiOjE2NTA0MDI0NDl9.A_caLtBH9p3PbGnfb7Ph1gIlgRc-DJ7ppdOf9JHrX58'
-}, function (err, response) {
-  console.log(response, err)
-})
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
+
+  var isLogin = GetToken()
+  var navigate = useNavigate()
+
+  useEffect(() => {
+    if (!isLogin) {
+      return navigate("/login");
+    }
+  }, [isLogin]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <ParrotNav />
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/bill" element={<BillPage />} />
+          <Route path="/receipt" element={<ReceiptPage />} />
+        </Routes>
+      </div>
+    </ThemeProvider>
+
   );
 }
 

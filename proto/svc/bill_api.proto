@@ -8,6 +8,7 @@ message AddBillRequest {
     bill.PayType pay_type = 1;
     repeated string payee_list = 2;
     float amount = 3;
+    string description = 4;
 }
 
 message AddBillResponse {
@@ -23,7 +24,16 @@ message GetBillResponse {
     bill.Bill bill = 1;
 }
 
+message GetAllBillRequest {
+    bool only_me = 1;
+}
+
+message GetAllBillResponse {
+    repeated bill.Bill bill_list = 1;
+}
+
 service Bill {
     rpc Add(AddBillRequest) returns (AddBillResponse) {};
     rpc Get(GetBillRequest) returns (GetBillResponse) {};
+    rpc GetAll(GetAllBillRequest) returns (GetAllBillResponse) {};
 }

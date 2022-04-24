@@ -30,7 +30,6 @@ func (a *AuthEndpoint) Login(ctx context.Context, req *svc.LoginRequest) (*svc.L
 	}
 
 	return &svc.LoginResponse{
-		StatusCode: 200,
-		Token:      token,
+		Token: token,
 	}, nil
 }

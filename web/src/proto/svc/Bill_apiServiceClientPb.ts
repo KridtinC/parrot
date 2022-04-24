@@ -121,5 +121,48 @@ export class BillClient {
     this.methodDescriptorGet);
   }
 
+  methodDescriptorGetAll = new grpcWeb.MethodDescriptor(
+    '/svc.Bill/GetAll',
+    grpcWeb.MethodType.UNARY,
+    proto_svc_bill_api_pb.GetAllBillRequest,
+    proto_svc_bill_api_pb.GetAllBillResponse,
+    (request: proto_svc_bill_api_pb.GetAllBillRequest) => {
+      return request.serializeBinary();
+    },
+    proto_svc_bill_api_pb.GetAllBillResponse.deserializeBinary
+  );
+
+  getAll(
+    request: proto_svc_bill_api_pb.GetAllBillRequest,
+    metadata: grpcWeb.Metadata | null): Promise<proto_svc_bill_api_pb.GetAllBillResponse>;
+
+  getAll(
+    request: proto_svc_bill_api_pb.GetAllBillRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: proto_svc_bill_api_pb.GetAllBillResponse) => void): grpcWeb.ClientReadableStream<proto_svc_bill_api_pb.GetAllBillResponse>;
+
+  getAll(
+    request: proto_svc_bill_api_pb.GetAllBillRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: proto_svc_bill_api_pb.GetAllBillResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/svc.Bill/GetAll',
+        request,
+        metadata || {},
+        this.methodDescriptorGetAll,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/svc.Bill/GetAll',
+    request,
+    metadata || {},
+    this.methodDescriptorGetAll);
+  }
+
 }
 

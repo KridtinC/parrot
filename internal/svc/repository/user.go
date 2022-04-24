@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"parrot/internal/session"
 	"parrot/internal/svc/entity"
 	"parrot/pkg/db"
 	"parrot/pkg/meta"
@@ -41,4 +42,37 @@ func (u *UserRepository) Get(ctx context.Context, userID string) (*entity.User, 
 	}
 
 	return user, nil
+}
+
+// GetAllUserIDs get all users only by id
+func (u *UserRepository) GetAllUserIDs(ctx context.Context) ([]string, error) {
+	var (
+		userIDs     = []string{}
+		queryString = fmt.Sprintf("select user_id from %s.user;", u.DBConn.DBName)
+		ss          = session.MustGet(ctx)
+	)
+
+	result, err := u.DBConn.QueryContext(ctx, queryString)
+
+	var userID string
+	for {
+		if !result.Next() {
+			break
+		}
+
+		err = result.Scan(&userID)
+		if err != nil {
+			log.Printf("cannot scan result user id %s", userID)
+			return nil, err
+		}
+
+		if userID == ss.UserID {
+			// excluding yourself
+			continue
+		}
+
+		userIDs = append(userIDs, userID)
+	}
+
+	return userIDs, nil
 }

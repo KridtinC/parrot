@@ -2,12 +2,16 @@ syntax = "proto3";
 package svc.bill;
 option go_package = "parrot/proto/svc/bill;billpb";
 
+import "google/protobuf/timestamp.proto";
+
 message Bill {
     string bill_id = 1;
-    string payer_id = 2;
-    string payee_id = 3;
-    float amount = 4;
-    PayType pay_type = 5;
+    float amount = 2;
+    string description = 3;
+    PayType pay_type = 4;
+    google.protobuf.Timestamp created_on = 5;
+    string payer_id = 6;
+    string receipt_id = 7;
     
 }
 
