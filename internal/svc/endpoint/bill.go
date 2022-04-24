@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"parrot/internal/svc/entity"
+	"parrot/pkg/meta"
 	"parrot/proto/svc"
 )
 
@@ -24,6 +25,10 @@ func NewBill(billUseCase billUseCase) *BillEndpoint {
 func (b *BillEndpoint) Add(ctx context.Context, req *svc.AddBillRequest) (*svc.AddBillResponse, error) {
 
 	log.Printf("called add, type %s list %v amount %v\n", req.GetPayType(), req.GetPayeeList(), req.GetAmount())
+
+	if len(req.GetPayeeList()) == 0 {
+		return nil, meta.ErrorMissingField("Payee List")
+	}
 
 	err := b.billUseCase.Create(ctx, entity.PayTypeFromProtoMap[req.GetPayType()], req.GetPayeeList(), float32(req.GetAmount()))
 	if err != nil {

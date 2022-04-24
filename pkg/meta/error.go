@@ -34,3 +34,8 @@ func ErrorInvalidSession() error {
 func ErrorSessionExpired() error {
 	return status.Error(codes.Unauthenticated, "Session expired, please login again")
 }
+
+// ErrorMissingField return missing field error
+func ErrorMissingField(fieldName string) error {
+	return status.Errorf(codes.InvalidArgument, "Missing field: %s", fieldName)
+}

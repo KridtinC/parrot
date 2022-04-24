@@ -130,6 +130,91 @@ func (x *GetUserResponse) GetLastName() string {
 	return ""
 }
 
+type GetAllUsersRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *GetAllUsersRequest) Reset() {
+	*x = GetAllUsersRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_svc_user_api_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllUsersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersRequest) ProtoMessage() {}
+
+func (x *GetAllUsersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_svc_user_api_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersRequest.ProtoReflect.Descriptor instead.
+func (*GetAllUsersRequest) Descriptor() ([]byte, []int) {
+	return file_proto_svc_user_api_proto_rawDescGZIP(), []int{2}
+}
+
+type GetAllUsersResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserIds []string `protobuf:"bytes,1,rep,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+}
+
+func (x *GetAllUsersResponse) Reset() {
+	*x = GetAllUsersResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_proto_svc_user_api_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllUsersResponse) ProtoMessage() {}
+
+func (x *GetAllUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_svc_user_api_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllUsersResponse.ProtoReflect.Descriptor instead.
+func (*GetAllUsersResponse) Descriptor() ([]byte, []int) {
+	return file_proto_svc_user_api_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetAllUsersResponse) GetUserIds() []string {
+	if x != nil {
+		return x.UserIds
+	}
+	return nil
+}
+
 var File_proto_svc_user_api_proto protoreflect.FileDescriptor
 
 var file_proto_svc_user_api_proto_rawDesc = []byte{
@@ -144,12 +229,21 @@ var file_proto_svc_user_api_proto_rawDesc = []byte{
 	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x66, 0x69, 0x72, 0x73,
 	0x74, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1b, 0x0a, 0x09, 0x6c, 0x61, 0x73, 0x74, 0x5f, 0x6e, 0x61,
 	0x6d, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x6c, 0x61, 0x73, 0x74, 0x4e, 0x61,
-	0x6d, 0x65, 0x32, 0x3a, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12, 0x32, 0x0a, 0x03, 0x47, 0x65,
-	0x74, 0x12, 0x13, 0x2e, 0x73, 0x76, 0x63, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x14, 0x2e, 0x73, 0x76, 0x63, 0x2e, 0x47, 0x65, 0x74,
-	0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x12,
-	0x5a, 0x10, 0x70, 0x61, 0x72, 0x72, 0x6f, 0x74, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x73,
-	0x76, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6d, 0x65, 0x22, 0x14, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72,
+	0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x30, 0x0a, 0x13, 0x47, 0x65, 0x74, 0x41,
+	0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x19, 0x0a, 0x08, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28,
+	0x09, 0x52, 0x07, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x73, 0x32, 0x79, 0x0a, 0x04, 0x55, 0x73,
+	0x65, 0x72, 0x12, 0x32, 0x0a, 0x03, 0x47, 0x65, 0x74, 0x12, 0x13, 0x2e, 0x73, 0x76, 0x63, 0x2e,
+	0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x14,
+	0x2e, 0x73, 0x76, 0x63, 0x2e, 0x47, 0x65, 0x74, 0x55, 0x73, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x3d, 0x0a, 0x06, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c,
+	0x12, 0x17, 0x2e, 0x73, 0x76, 0x63, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65,
+	0x72, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x18, 0x2e, 0x73, 0x76, 0x63, 0x2e,
+	0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x55, 0x73, 0x65, 0x72, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x12, 0x5a, 0x10, 0x70, 0x61, 0x72, 0x72, 0x6f, 0x74, 0x2f,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x73, 0x76, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -164,16 +258,20 @@ func file_proto_svc_user_api_proto_rawDescGZIP() []byte {
 	return file_proto_svc_user_api_proto_rawDescData
 }
 
-var file_proto_svc_user_api_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_proto_svc_user_api_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_proto_svc_user_api_proto_goTypes = []interface{}{
-	(*GetUserRequest)(nil),  // 0: svc.GetUserRequest
-	(*GetUserResponse)(nil), // 1: svc.GetUserResponse
+	(*GetUserRequest)(nil),      // 0: svc.GetUserRequest
+	(*GetUserResponse)(nil),     // 1: svc.GetUserResponse
+	(*GetAllUsersRequest)(nil),  // 2: svc.GetAllUsersRequest
+	(*GetAllUsersResponse)(nil), // 3: svc.GetAllUsersResponse
 }
 var file_proto_svc_user_api_proto_depIdxs = []int32{
 	0, // 0: svc.User.Get:input_type -> svc.GetUserRequest
-	1, // 1: svc.User.Get:output_type -> svc.GetUserResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	2, // 1: svc.User.GetAll:input_type -> svc.GetAllUsersRequest
+	1, // 2: svc.User.Get:output_type -> svc.GetUserResponse
+	3, // 3: svc.User.GetAll:output_type -> svc.GetAllUsersResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -209,6 +307,30 @@ func file_proto_svc_user_api_proto_init() {
 				return nil
 			}
 		}
+		file_proto_svc_user_api_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllUsersRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_proto_svc_user_api_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetAllUsersResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -216,7 +338,7 @@ func file_proto_svc_user_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_proto_svc_user_api_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

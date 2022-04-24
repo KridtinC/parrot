@@ -78,5 +78,48 @@ export class UserClient {
     this.methodDescriptorGet);
   }
 
+  methodDescriptorGetAll = new grpcWeb.MethodDescriptor(
+    '/svc.User/GetAll',
+    grpcWeb.MethodType.UNARY,
+    proto_svc_user_api_pb.GetAllUsersRequest,
+    proto_svc_user_api_pb.GetAllUsersResponse,
+    (request: proto_svc_user_api_pb.GetAllUsersRequest) => {
+      return request.serializeBinary();
+    },
+    proto_svc_user_api_pb.GetAllUsersResponse.deserializeBinary
+  );
+
+  getAll(
+    request: proto_svc_user_api_pb.GetAllUsersRequest,
+    metadata: grpcWeb.Metadata | null): Promise<proto_svc_user_api_pb.GetAllUsersResponse>;
+
+  getAll(
+    request: proto_svc_user_api_pb.GetAllUsersRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback: (err: grpcWeb.RpcError,
+               response: proto_svc_user_api_pb.GetAllUsersResponse) => void): grpcWeb.ClientReadableStream<proto_svc_user_api_pb.GetAllUsersResponse>;
+
+  getAll(
+    request: proto_svc_user_api_pb.GetAllUsersRequest,
+    metadata: grpcWeb.Metadata | null,
+    callback?: (err: grpcWeb.RpcError,
+               response: proto_svc_user_api_pb.GetAllUsersResponse) => void) {
+    if (callback !== undefined) {
+      return this.client_.rpcCall(
+        this.hostname_ +
+          '/svc.User/GetAll',
+        request,
+        metadata || {},
+        this.methodDescriptorGetAll,
+        callback);
+    }
+    return this.client_.unaryCall(
+    this.hostname_ +
+      '/svc.User/GetAll',
+    request,
+    metadata || {},
+    this.methodDescriptorGetAll);
+  }
+
 }
 

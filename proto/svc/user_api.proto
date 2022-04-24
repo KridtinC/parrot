@@ -12,6 +12,14 @@ message GetUserResponse {
     string last_name = 3;
 }
 
+message GetAllUsersRequest {
+}
+
+message GetAllUsersResponse {
+    repeated string user_ids = 1;
+}
+
 service User {
     rpc Get(GetUserRequest) returns (GetUserResponse) {};
+    rpc GetAll(GetAllUsersRequest) returns (GetAllUsersResponse) {};
 }

@@ -46,3 +46,37 @@ export namespace GetUserResponse {
   }
 }
 
+export class GetAllUsersRequest extends jspb.Message {
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersRequest): GetAllUsersRequest.AsObject;
+  static serializeBinaryToWriter(message: GetAllUsersRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersRequest;
+  static deserializeBinaryFromReader(message: GetAllUsersRequest, reader: jspb.BinaryReader): GetAllUsersRequest;
+}
+
+export namespace GetAllUsersRequest {
+  export type AsObject = {
+  }
+}
+
+export class GetAllUsersResponse extends jspb.Message {
+  getUserIdsList(): Array<string>;
+  setUserIdsList(value: Array<string>): GetAllUsersResponse;
+  clearUserIdsList(): GetAllUsersResponse;
+  addUserIds(value: string, index?: number): GetAllUsersResponse;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAllUsersResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAllUsersResponse): GetAllUsersResponse.AsObject;
+  static serializeBinaryToWriter(message: GetAllUsersResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAllUsersResponse;
+  static deserializeBinaryFromReader(message: GetAllUsersResponse, reader: jspb.BinaryReader): GetAllUsersResponse;
+}
+
+export namespace GetAllUsersResponse {
+  export type AsObject = {
+    userIdsList: Array<string>,
+  }
+}
+

@@ -34,3 +34,17 @@ func (u *UserEndpoint) Get(ctx context.Context, req *svc.GetUserRequest) (*svc.G
 		LastName:  user.LastName,
 	}, nil
 }
+
+// GetAll get all user names
+func (u *UserEndpoint) GetAll(ctx context.Context, req *svc.GetAllUsersRequest) (*svc.GetAllUsersResponse, error) {
+	log.Print("called get all users")
+
+	userIDs, err := u.userUseCase.GetAllUserIDs(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &svc.GetAllUsersResponse{
+		UserIds: userIDs,
+	}, nil
+}

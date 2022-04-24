@@ -28,6 +28,8 @@ class AuthInterceptor {
     }
 }
 
+var authInterceptor = new AuthInterceptor()
+
 export {
-    AuthInterceptor
+    authInterceptor
 }

@@ -12,6 +12,7 @@ type billUseCase interface {
 
 type userUseCase interface {
 	Get(ctx context.Context, userID string) (*entity.User, error)
+	GetAllUserIDs(ctx context.Context) ([]string, error)
 }
 
 type authUseCase interface {

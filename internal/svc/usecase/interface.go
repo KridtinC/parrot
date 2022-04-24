@@ -11,4 +11,5 @@ type billRepository interface {
 }
 type userRepository interface {
 	Get(ctx context.Context, userID string) (*entity.User, error)
+	GetAllUserIDs(ctx context.Context) ([]string, error)
 }

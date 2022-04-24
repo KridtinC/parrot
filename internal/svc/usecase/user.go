@@ -31,3 +31,15 @@ func (u *UserUseCase) Get(ctx context.Context, userID string) (*entity.User, err
 
 	return user, nil
 }
+
+// GetAllUserIDs get all user ids
+func (u *UserUseCase) GetAllUserIDs(ctx context.Context) ([]string, error) {
+
+	userIDs, err := u.userRepository.GetAllUserIDs(ctx)
+	if err != nil {
+		return nil, meta.ErrorInternalServer(err)
+	}
+
+	return userIDs, nil
+
+}
