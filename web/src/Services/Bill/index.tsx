@@ -1,7 +1,6 @@
 import { Bill } from "../../proto/svc/bill/bill_pb";
 import { BillClient } from "../../proto/svc/Bill_apiServiceClientPb";
-import { AddBillRequest, AddBillResponse, GetAllBillRequest, GetAllBillResponse } from "../../proto/svc/bill_api_pb";
-import { GetToken } from "../../Utils";
+import { AddBillRequest, AddBillResponse, GetAllBillRequest } from "../../proto/svc/bill_api_pb";
 import { authInterceptor } from "../Middleware";
 
 var billService = new BillClient('http://localhost:5000', null, {

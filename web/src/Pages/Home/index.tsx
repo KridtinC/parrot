@@ -38,7 +38,7 @@ let HomePage = () => {
     const updateUserList = (isChecked: boolean, filteredUserName: string) => {
         console.log(selectedUserNames + 'before')
         if (!isChecked) {
-            selectedUserNames = selectedUserNames.filter(user => user != filteredUserName)
+            selectedUserNames = selectedUserNames.filter(user => user !== filteredUserName)
             console.log(selectedUserNames + 'after')
             return
         }

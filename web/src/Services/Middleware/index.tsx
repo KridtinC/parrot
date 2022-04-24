@@ -1,5 +1,4 @@
-import { Request, RpcError, StatusCode } from "grpc-web";
-import { Navigate, useNavigate } from "react-router-dom";
+import { RpcError, StatusCode } from "grpc-web";
 import { GetToken, ResetToken } from "../../Utils";
 
 class AuthInterceptor {
