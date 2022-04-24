@@ -1,4 +1,3 @@
-import { RpcError } from "grpc-web"
 import { Button, Container, Nav, Navbar } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { GetToken, ResetToken } from "../../Utils"
@@ -7,16 +6,8 @@ const ParrotNav = () => {
 
     var navigate = useNavigate()
     const Logout = async (e: any) => {
-        try {
-            ResetToken()
-            navigate("/login")
-        } catch (e) {
-            if (e instanceof RpcError) {
-                alert(e.message)
-            } else {
-                alert('unknown error' + e)
-            }
-        }
+        ResetToken()
+        navigate("/login")
     }
 
     return <Navbar expand="lg" variant="dark" bg="dark" style={{ height: "8vh" }} sticky="top">
