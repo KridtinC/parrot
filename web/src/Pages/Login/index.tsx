@@ -1,6 +1,6 @@
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Input, InputLabel } from "@mui/material";
 import { RpcError } from "grpc-web";
 import { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { Login } from "../../Services/Auth";
 import { GetToken } from "../../Utils";
@@ -43,11 +43,34 @@ let LoginPage = () => {
         if (isLogin) {
             return navigate("/");
         }
-    }, [isLogin]);
+    }, [isLogin, navigate]);
 
     return <>
         <h2>Login</h2>
-        <Form className="login-form" onSubmit={SubmitForm}>
+        <form className="login-form" onSubmit={SubmitForm}>
+            <FormControl required>
+                <InputLabel htmlFor="login-username">Username</InputLabel>
+                <Input id="login-username" type="text" onChange={e => setUserName(e.target.value)} required />
+            </FormControl>
+            <FormControl required>
+                <InputLabel htmlFor="login-password">Password</InputLabel>
+                <Input id="login-password" type="password" onChange={e => setPassword(e.target.value)} required />
+            </FormControl>
+            <FormControl required>
+                <FormGroup>
+                    <FormControlLabel
+                        control={
+                            <Checkbox onChange={e => setRememberMe(e.target.checked)} />
+                        }
+                        label="Remember me"
+                    />
+                </FormGroup>
+            </FormControl>
+            <Button type="submit" variant="contained">Submit</Button>
+        </form>
+
+
+        {/* <Form className="login-form" onSubmit={SubmitForm}>
             <Form.Group className="mb-3" controlId="formBasicUserName">
                 <Form.Label>User Name</Form.Label>
                 <Form.Control type="text" placeholder="Enter username" onChange={e => setUserName(e.target.value)} />
@@ -63,7 +86,7 @@ let LoginPage = () => {
             <Button variant="primary" type="submit">
                 Submit
             </Button>
-        </Form>
+        </Form> */}
     </>
 }
 

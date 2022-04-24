@@ -1,8 +1,11 @@
 .login-form {
     border-radius: 15px;
     padding: 20px;
-    background-color: lightskyblue;
-    width: 50%;
-    max-width: 400px;
-    color: black;
+    border-color: grey;
+    border-style: solid;
+    border-width: thin;
+    width: 80%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
 }
