@@ -1,6 +1,6 @@
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Input, InputLabel, Radio, RadioGroup } from "@mui/material"
 import { RpcError } from "grpc-web"
 import { useEffect, useState } from "react"
-import { Button, Form } from "react-bootstrap"
 import { AddBill } from "../../Services/Bill"
 import { GetUserNames } from "../../Services/User"
 import './Home.css'
@@ -8,7 +8,7 @@ import './Home.css'
 let HomePage = () => {
 
     var [userNames, setUserNames] = useState([] as string[])
-    var selectedUserNames = [] as string[]
+    var [selectedUserNames, setSelectedUserNames] = useState([] as string[])
     var [amount, setAmount] = useState(0.0)
     var [payType, setPayType] = useState(0)
     var [desc, setDesc] = useState('');
@@ -35,15 +35,12 @@ let HomePage = () => {
 
     }
 
-    const updateUserList = (isChecked: boolean, filteredUserName: string) => {
-        console.log(selectedUserNames + 'before')
-        if (!isChecked) {
-            selectedUserNames = selectedUserNames.filter(user => user !== filteredUserName)
-            console.log(selectedUserNames + 'after')
+    const updateUserList = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!event.target.checked) {
+            setSelectedUserNames((prev) => prev.filter(user => user !== event.target.name))
             return
         }
-        selectedUserNames.push(filteredUserName)
-        console.log(selectedUserNames + 'after')
+        setSelectedUserNames((prev) => [...prev, event.target.name])
     }
 
     useEffect(() => {
@@ -66,49 +63,46 @@ let HomePage = () => {
     }, [])
 
     return <>
-        <h1>Add Bill</h1>
-        <Form className="bill-form" onSubmit={SubmitForm}>
-            <Form.Group className="mb-3" controlId="formBasicUserName">
-                <Form.Label>User Name</Form.Label>
-                <div className="bill-form-usernames">
+        <h2>Add Bill</h2>
+        <form className="bill-form" onSubmit={SubmitForm}>
+            <FormControl required>
+                <FormLabel component="legend">User Name</FormLabel>
+                <FormGroup>
                     {
-                        userNames.map((userName) => {
-                            return <Form.Check key={userName} type="checkbox" id={userName} label={userName} name='usernames' onChange={e => updateUserList(e.target.checked, e.target.id)} />
+                        userNames.map((user) => {
+                            return <FormControlLabel
+                                key={user}
+                                control={
+                                    <Checkbox onChange={updateUserList} name={user} />
+                                }
+                                label={user}
+                            />
                         })
                     }
-                </div>
-
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicAmount">
-                <Form.Label>Description</Form.Label>
-                <Form.Control type="text" placeholder="Enter description" onChange={e => setDesc(e.target.value)} required />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicAmount">
-                <Form.Label>Amount</Form.Label>
-                <Form.Control type="number" placeholder="Amount in THB" onChange={e => setAmount(+e.target.value)} required />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPayType">
-                <Form.Label>Pay Type</Form.Label>
-                <Form.Check
-                    type='radio'
-                    id='halved'
-                    label='Halved'
-                    name='pay_type'
-                    onChange={e => setPayType(1)}
-                />
-                <Form.Check
-                    type='radio'
-                    id='advanced'
-                    label='Advanced'
-                    name='pay_type'
-                    onChange={e => setPayType(2)}
-                />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
+                </FormGroup>
+            </FormControl>
+            <FormControl required>
+                <InputLabel htmlFor="bill-desc">Description</InputLabel>
+                <Input id="bill-desc" type="text" aria-describedby="bill-desc-helper" onChange={e => setDesc(e.target.value)} required />
+                <FormHelperText id="bill-desc-helper">Description of this bill.</FormHelperText>
+            </FormControl>
+            <FormControl required>
+                <InputLabel htmlFor="bill-amount">Amount</InputLabel>
+                <Input id="bill-amount" type="number" aria-describedby="bill-amount-helper" onChange={e => setAmount(+e.target.value)} required />
+                <FormHelperText id="bill-amount-helper">Amount of this bill.</FormHelperText>
+            </FormControl>
+            <FormControl required>
+                <FormLabel id="bill-paytype">Pay Type</FormLabel>
+                <RadioGroup
+                    defaultValue="halved"
+                    name="bill-paytype-group"
+                >
+                    <FormControlLabel value="halved" control={<Radio />} label="Halved" onChange={e => setPayType(1)} />
+                    <FormControlLabel value="advanced" control={<Radio />} label="Advanced" onChange={e => setPayType(2)} />
+                </RadioGroup>
+            </FormControl>
+            <Button type="submit" variant="contained">Submit</Button>
+        </form>
     </>
 }
 
