@@ -31,7 +31,7 @@ func Get() *Config {
 				UserName: foundation.GetEnvWithDefault("DB_USERNAME", "parrot"),
 				Password: foundation.GetEnvWithDefault("DB_PASSWORD", "P@ssw0rd"),
 				IP:       foundation.GetEnvWithDefault("DB_IP", "localhost"),
-				Port:     foundation.GetEnvWithDefault("DB_PORT", "3307"),
+				Port:     foundation.GetEnvWithDefault("DB_PORT", "3306"),
 				Name:     foundation.GetEnvWithDefault("DB_NAME", "parrot"),
 			},
 

@@ -1,9 +1,50 @@
 version: '3'
 services:
-  envoy:
+  parrot-proxy:
     image: envoyproxy/envoy-dev:aa0ab4cc0cea2a06152eb2d8e0c4723b3f02c72c
     ports:
       - "5000:5000"
-    container_name: parrot_proxy
+    container_name: parrot-proxy
     volumes:
       - ./envoy.yaml:/etc/envoy/envoy.yaml
+    expose:
+      - "5000"
+  parrot-web:
+    image: parrot-web
+    ports:
+      - "3000:3000"
+    container_name: parrot-web
+    expose:
+      - "3000"
+  parrot-db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    container_name: parrot-db
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+      MYSQL_USER: parrot
+      MYSQL_PASSWORD: P@ssw0rd
+      MYSQL_DATABASE: parrot
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 3s
+      timeout: 10s
+      retries: 5
+    expose:
+      - "3306"
+  parrot-service:
+    image: parrot-service
+    ports:
+      - "8080:8080"
+    container_name: parrot-service
+    depends_on:
+      parrot-db:
+        condition: service_healthy
+    environment:
+      - DB_IP=parrot-db
+      - BASE_PATH_URL=0.0.0.0
+    expose:
+      - "8080"

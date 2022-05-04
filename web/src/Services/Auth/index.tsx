@@ -1,7 +1,8 @@
+import { ServiceURL } from "..";
 import { AuthClient } from "../../proto/svc/Auth_apiServiceClientPb";
 import { LoginRequest, LoginResponse } from "../../proto/svc/auth_api_pb";
 
-var authService = new AuthClient('http://localhost:5000')
+var authService = new AuthClient(ServiceURL)
 
 var Login = async (username: string, password: string): Promise<LoginResponse> => {
   var request = new LoginRequest();

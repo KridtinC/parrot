@@ -1,8 +1,9 @@
+import { ServiceURL } from ".."
 import { UserClient } from "../../proto/svc/User_apiServiceClientPb"
 import { GetAllUsersRequest } from "../../proto/svc/user_api_pb"
 import { authInterceptor } from "../Middleware"
 
-var userService = new UserClient('http://localhost:5000', null, {
+var userService = new UserClient(ServiceURL, null, {
     'unaryInterceptors': [authInterceptor]
 })
 
