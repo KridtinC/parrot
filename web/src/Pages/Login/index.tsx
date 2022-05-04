@@ -1,7 +1,8 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Input, InputLabel } from "@mui/material";
-import { RpcError } from "grpc-web";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PDialog } from "../../Components/Dialog";
+import { APIStatus } from "../../Components/Dialog/enum";
 import { Login } from "../../Services/Auth";
 import { GetToken } from "../../Utils";
 import './Form.css'
@@ -15,10 +16,21 @@ let LoginPage = () => {
     var [password, setPassword] = useState('')
     var [rememberMe, setRememberMe] = useState(false)
 
+    var [openDialog, setOpenDialog] = useState(false);
+    var [addBillErr, setAddBillErr] = useState(null as any);
+    var [apiStatus, setAPIStatus] = useState(APIStatus.NONE);
+
+    var HandleClose = () => {
+        setOpenDialog(false);
+    }
+
     var SubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         console.log(userName, password, rememberMe)
+
+        setOpenDialog(true);
+        setAPIStatus(APIStatus.PROCESSING);
 
         try {
             let response = await Login(userName, password)
@@ -28,13 +40,11 @@ let LoginPage = () => {
             } else {
                 sessionStorage.setItem('token', response.getToken())
             }
+            setAPIStatus(APIStatus.COMPLETED);
             navigate("/")
         } catch (e) {
-            if (e instanceof RpcError) {
-                alert(e.message)
-            } else {
-                alert('unknown error' + e)
-            }
+            setAPIStatus(APIStatus.FAILED)
+            setAddBillErr(e)
         }
 
     }
@@ -52,6 +62,7 @@ let LoginPage = () => {
                 <InputLabel htmlFor="login-username">Username</InputLabel>
                 <Input id="login-username" type="text" onChange={e => setUserName(e.target.value)} required />
             </FormControl>
+            <br/>
             <FormControl required>
                 <InputLabel htmlFor="login-password">Password</InputLabel>
                 <Input id="login-password" type="password" onChange={e => setPassword(e.target.value)} required />
@@ -68,6 +79,7 @@ let LoginPage = () => {
             </FormControl>
             <Button type="submit" variant="contained">Submit</Button>
         </form>
+        <PDialog open={openDialog} err={addBillErr} onClose={HandleClose} status={apiStatus} />
     </>
 }
 
