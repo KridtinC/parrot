@@ -62,6 +62,7 @@ let LoginPage = () => {
                 <InputLabel htmlFor="login-username">Username</InputLabel>
                 <Input id="login-username" type="text" onChange={e => setUserName(e.target.value)} required />
             </FormControl>
+            <br/>
             <FormControl required>
                 <InputLabel htmlFor="login-password">Password</InputLabel>
                 <Input id="login-password" type="password" onChange={e => setPassword(e.target.value)} required />
