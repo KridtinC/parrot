@@ -9,7 +9,7 @@ import (
 // this operation SQL script is in sql folder
 // only for dev env!
 func ResetDB(conn *MySQLConnection) error {
-	sqlScript, err := ioutil.ReadFile("./sql/schema/parrot.sql")
+	sqlScript, err := ioutil.ReadFile("./sql/parrot.sql")
 	if err != nil {
 		log.Printf("read schema file err: %s", err.Error())
 		return err
@@ -26,7 +26,7 @@ func ResetDB(conn *MySQLConnection) error {
 
 // DumpDB dump data into db
 func DumpDB(conn *MySQLConnection) error {
-	sqlScript, err := ioutil.ReadFile("./sql/dump/user.sql")
+	sqlScript, err := ioutil.ReadFile("./sql/dump.sql")
 	if err != nil {
 		log.Printf("read dump file err: %s", err.Error())
 		return err

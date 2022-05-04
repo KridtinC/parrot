@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"reflect"
 	"strings"
 	"time"
@@ -56,9 +57,17 @@ func (m *MySQLConnection) ExecScripts(sqlScript string) error {
 // OpenMySQLConnection open mysql connection
 func OpenMySQLConnection(ip, port, username, password, dbName string) (*MySQLConnection, error) {
 
-	var connstr = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, ip, port, dbName)
+	var (
+		connstr       = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", username, password, ip, port, dbName)
+		maxRetryTimes = 5
+		sleepTime     = time.Second * 3
+		db            *sql.DB
+		err           error
+	)
 
-	db, err := sql.Open("mysql", connstr)
+	log.Printf("start connection with parrot-db on url %s:%s", ip, port)
+
+	db, err = sql.Open("mysql", connstr)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +76,21 @@ func OpenMySQLConnection(ip, port, username, password, dbName string) (*MySQLCon
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	err = db.Ping()
+	for retry := 0; retry < maxRetryTimes; retry++ {
+		if retry == maxRetryTimes {
+			break
+		}
+
+		err = db.Ping()
+		if err == nil {
+			log.Printf("connection was successful")
+			break
+		}
+
+		log.Printf("connection failed, sleep %s before retry time: %d", sleepTime, retry)
+		time.Sleep(sleepTime)
+	}
+
 	if err != nil {
 		return nil, err
 	}

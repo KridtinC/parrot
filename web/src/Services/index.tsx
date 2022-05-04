@@ -1,0 +1,1 @@
+export const ServiceURL = `http://${window.location.hostname}:5000`
