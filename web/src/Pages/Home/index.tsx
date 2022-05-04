@@ -1,6 +1,8 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Input, InputLabel, Radio, RadioGroup } from "@mui/material"
 import { RpcError } from "grpc-web"
 import { useEffect, useState } from "react"
+import { PDialog } from "../../Components/Dialog"
+import { APIStatus } from "../../Components/Dialog/enum"
 import { AddBill } from "../../Services/Bill"
 import { GetUserNames } from "../../Services/User"
 import './Home.css'
@@ -13,6 +15,14 @@ let HomePage = () => {
     var [payType, setPayType] = useState(0)
     var [desc, setDesc] = useState('');
 
+    var [openDialog, setOpenDialog] = useState(false);
+    var [addBillErr, setAddBillErr] = useState(null as any);
+    var [apiStatus, setAPIStatus] = useState(APIStatus.NONE);
+
+    var HandleClose = () => {
+        setOpenDialog(false);
+    }
+
     var SubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const form = e.currentTarget;
@@ -23,14 +33,15 @@ let HomePage = () => {
 
         console.log(selectedUserNames, amount, payType)
 
+        setOpenDialog(true);
+        setAPIStatus(APIStatus.PROCESSING);
+
         try {
             await AddBill(selectedUserNames, amount, payType, desc)
+            setAPIStatus(APIStatus.COMPLETED);
         } catch (e) {
-            if (e instanceof RpcError) {
-                alert(e.message)
-            } else {
-                alert('unknown error' + e)
-            }
+            setAPIStatus(APIStatus.FAILED)
+            setAddBillErr(e)
         }
 
     }
@@ -103,6 +114,7 @@ let HomePage = () => {
             </FormControl>
             <Button type="submit" variant="contained">Submit</Button>
         </form>
+        <PDialog open={openDialog} err={addBillErr} onClose={HandleClose} status={apiStatus} />
     </>
 }
 
